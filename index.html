@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSF实习工作汇总</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            background: linear-gradient(135deg, #2ba6e1, #4fc3f7);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-left: 15px;
+        }
+
+        /* 侧边栏目录 */
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: white;
+            border-right: 2px solid #e0e0e0;
+            overflow-y: auto;
+            z-index: 999;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-content {
+            padding: 20px;
+        }
+
+        .sidebar h3 {
+            color: #2ba6e1;
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2ba6e1;
+        }
+
+        .toc-item {
+            margin: 8px 0;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .toc-link:hover {
+            background: #e2f6fd;
+            color: #2ba6e1;
+            transform: translateX(5px);
+        }
+
+        .toc-link.active {
+            background: #2ba6e1;
+            color: white;
+        }
+
+        .toc-sub {
+            margin-left: 15px;
+            font-size: 13px;
+        }
+        
+
+        /* 主内容区域 */
+        .main-content {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 20px;
+        }
+
+        /* 调整锚点定位，避免被顶部导航栏遮挡 */
+        h2[id], h3[id], .section-title[id] {
+            scroll-margin-top: 90px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section-title {
+            background: #e2f6fd;
+            border-left: 4px solid #2ba6e1;
+            padding: 15px 28px;
+            margin: 25px 0 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2ba6e1;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .content-block {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        h2 {
+            color: #2ba6e1;
+            font-size: 20px;
+            margin: 20px 0 15px 0;
+            border-bottom: 2px solid #2ba6e1;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            color: #333;
+            font-size: 18px;
+            margin: 15px 0 10px 0;
+            font-weight: bold;
+        }
+        
+        p {
+            margin: 10px 0;
+            text-align: justify;
+            line-height: 1.7;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid #2ba6e1;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .data-table th {
+            background: #2ba6e1;
+            color: white;
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .data-table td {
+            padding: 10px 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .image-placeholder {
+            background: #f0f0f0;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .bullet-point {
+            margin: 15px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .bullet-point::before {
+            content: "●";
+            color: #2ba6e1;
+            position: absolute;
+            left: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        ol, ul {
+            padding-left: 30px;
+            margin: 15px 0;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        /* 移动端响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .nav-container {
+                padding: 0 15px;
+            }
+            
+            .nav-title {
+                font-size: 20px;
+            }
+            
+            .nav-subtitle {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 6px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+        
+        /* 3x3图片网格布局 */
+        .image-grid-3x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .grid-item {
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .grid-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #2ba6e1;
+            font-weight: bold;
+            margin: 0;
+            padding-top: 8px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .image-grid-3x3 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .grid-image {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-grid-3x3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-image {
+                height: 180px;
+            }
+        }
+
+        /* 2x2稳定性对比网格 */
+        .stability-comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .algorithm-column {
+            text-align: center;
+        }
+
+        .algorithm-column h3 {
+            background: linear-gradient(135deg, #2ba6e1, #4fc3f7);
+            color: white;
+            padding: 15px;
+            margin: 0 0 20px 0;
+            border-radius: 8px;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(43, 166, 225, 0.3);
+        }
+
+        .gif-container {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gif-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .gif-container:last-child {
+            margin-bottom: 0;
+        }
+
+        .stability-gif {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            background: #f5f5f5;
+        }
+
+        .gif-caption {
+            margin: 12px 0 0 0;
+            font-size: 14px;
+            color: #2ba6e1;
+            font-weight: bold;
+            padding: 8px;
+            background: #e2f6fd;
+            border-radius: 6px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .stability-comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .stability-gif {
+                height: 200px;
+            }
+            
+            .algorithm-column h3 {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stability-gif {
+                height: 180px;
+            }
+            
+            .gif-container {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* 视频容器样式 */
+        .video-container {
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #e2f6fd;
+        }
+
+        .enhanced-video-container {
+            margin: 25px 0;
+            background: linear-gradient(135deg, #f8f9fa, #e2f6fd);
+            border-radius: 0px;
+            padding: 0px;
+            border: none;
+        }
+
+        .video-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .video-header h3 {
+            color: #2ba6e1;
+            margin: 0 0 8px 0;
+            font-size: 20px;
+        }
+
+        .video-header p {
+            color: #666;
+            margin: 0;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .video-wrapper {
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .video-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .demo-video {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background-color: #000;
+        }
+
+        .video-caption {
+            text-align: center;
+            margin: 15px 0 0 0;
+            font-size: 14px;
+            color: #2ba6e1;
+            font-weight: bold;
+            padding: 10px;
+            background: #e2f6fd;
+            border-radius: 6px;
+        }
+
+        .video-tag {
+            background: #2ba6e1;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .video-duration {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .download-link {
+            color: #2ba6e1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式视频 */
+        @media (max-width: 768px) {
+            .video-container {
+                padding: 15px;
+                margin: 20px 0;
+            }
+            
+            .demo-video {
+                border-radius: 6px;
+            }
+            
+            .video-caption {
+                font-size: 13px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div style="display: flex; align-items: center;">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="nav-title">HSF实习工作汇总</div>
+                <div class="nav-subtitle">求职意向：SLAM工程师</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 侧边栏目录 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <h3>目录导航</h3>
+            <div class="toc-item">
+                <a href="#slam-evaluation" class="toc-link">激光SLAM算法测评</a>
+            </div>
+            <div class="toc-item toc-sub">
+                <a href="#mapping-accuracy" class="toc-link">建图精度对比</a>
+            </div>
+            <div class="toc-item toc-sub">
+                <a href="#stability-comparison" class="toc-link">稳定性对比</a>
+            </div>
+            
+            <div class="toc-item">
+                <a href="#relocalization" class="toc-link">LIO-SAM重定位框架</a>
+            </div>
+            <div class="toc-item toc-sub">
+                <a href="#relocalization-demo" class="toc-link">重定位效果展示</a>
+            </div>
+            
+            <div class="toc-item">
+                <a href="#navigation" class="toc-link">ROS2 Nav2导航</a>
+            </div>
+
+            <div class="toc-item toc-sub">
+                <a href="#dwb-controller" class="toc-link">DWB控制器</a>
+            </div>
+            <div class="toc-item toc-sub">
+                <a href="#pid-controller" class="toc-link">PID控制器</a>
+            </div>
+            <div class="toc-item toc-sub">
+                <a href="#escape-strategy" class="toc-link">逃脱策略</a>
+            </div>
+            
+            <div class="toc-item">
+                <a href="#bev-dataset" class="toc-link">BEV数据集采集</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content">
+                <div class="section-title" id="slam-evaluation">激光SLAM算法测评</div>
+
+                <div class="content-block">
+                    <h2 id="mapping-accuracy">建图精度对比</h2>
+                    <p>面向办公室与足球实验场地进行FAST-LIO1、FAST-LIO2和LIO-SAM算法的对比测试，测试结果如下：</p>
+                    
+                    <div class="image-grid-3x3">
+                        <div class="grid-item">
+                            <img src="images/fast1-1.png" alt="FAST-LIO1足球场细节图1" class="grid-image">
+                            <p class="image-caption">FAST-LIO1 足球场细节图1</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/fast1-2.png" alt="FAST-LIO1足球场细节图2" class="grid-image">
+                            <p class="image-caption">FAST-LIO1 足球场细节图2</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/fast1-3.png" alt="FAST-LIO1办公室" class="grid-image">
+                            <p class="image-caption">FAST-LIO1 办公室</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/fast2-1.png" alt="FAST-LIO2足球场细节图1" class="grid-image">
+                            <p class="image-caption">FAST-LIO2 足球场细节图1</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/fast2-2.png" alt="FAST-LIO2足球场细节图2" class="grid-image">
+                            <p class="image-caption">FAST-LIO2 足球场细节图2</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/fast2-3.png" alt="FAST-LIO2办公室" class="grid-image">
+                            <p class="image-caption">FAST-LIO2 办公室</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/lio1-1.png" alt="LIO-SAM足球场细节图1" class="grid-image">
+                            <p class="image-caption">LIO-SAM 足球场细节图1</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/lio1-2.png" alt="LIO-SAM足球场细节图2" class="grid-image">
+                            <p class="image-caption">LIO-SAM 足球场细节图2</p>
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/lio1-3.png" alt="LIO-SAM办公室" class="grid-image">
+                            <p class="image-caption">LIO-SAM 办公室</p>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="bullet-point">通过建图结果对比发现，FAST-LIO1建图得到的墙壁点云较厚，FAST-LIO2与LIO-SAM建图结果相似，进一步对比FAST-LIO2与LIO-SAM。</div>
+                    </div>
+                </div>
+
+                <div class="content-block">
+                    <h2 id="stability-comparison">稳定性对比</h2>
+                    
+                    <div class="stability-comparison-grid">
+                        <!-- FAST-LIO2列 -->
+                        <div class="algorithm-column">
+                            <h3>FAST-LIO2</h3>
+                            <div class="gif-container">
+                                <img src="images/fastlio2-odom.gif" alt="FAST-LIO2 里程计" class="stability-gif">
+                                <p class="gif-caption">FAST-LIO2 Odometry</p>
+                            </div>
+                            <div class="gif-container">
+                                <img src="images/fastlio2-pgo.gif" alt="FAST-LIO2 PGO" class="stability-gif">
+                                <p class="gif-caption">FAST-LIO2 PGO</p>
+                            </div>
+                        </div>
+                        
+                        <!-- LIO-SAM列 -->
+                        <div class="algorithm-column">
+                            <h3>LIO-SAM</h3>
+                            <div class="gif-container">
+                                <img src="images/liosam-odom.gif" alt="LIO-SAM 里程计" class="stability-gif">
+                                <p class="gif-caption">LIO-SAM Odometry</p>
+                            </div>
+                            <div class="gif-container">
+                                <img src="images/liosam-pgo.gif" alt="LIO-SAM PGO" class="stability-gif">
+                                <p class="gif-caption">LIO-SAM PGO</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <div class="bullet-point">为FAST-LIO2接入一个简单的回环检测模块：接收并时间同步前端里程计位姿和点云数据，判断是否满足关键帧条件（平移距离超过0.5米或时间间隔超过10秒），若满足则将其作为新的关键帧添加到姿态图优化中，并以第一帧的位姿作为固定节点。对于每个新的关键帧，使用KD树算法在全局位姿图中搜索2米范围内的回环候选，并通过ICP算法进行点云配准验证。如果验证成功，添加回环约束到优化图中，同时发布回环信息进行可视化。</div>
+                        <div class="bullet-point">LIO-SAM较FAST-LIO2更稳定一些，选择LIO-SAM为基础框架。</div>
+                        
+                        <h3>漂移原因：</h3>
+                        <p>毛玻璃粗糙不均匀的磨砂纹理在近场效应下，易产生噪声或异常反射率读数，干扰算法初始化。</p>
+                        
+                        <h3>毛玻璃与白墙建图效果对比：</h3>
+                        <img src="images/mapping-comparison.png" alt="建图精度对比" 
+             style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; margin: 20px 0; display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                </div>
+
+                <div class="section-title" id="relocalization">LIO-SAM重定位框架</div>
+
+                <div class="content-block">
+                    <h2 id="relocalization-demo">重定位效果可视化展示</h2>
+                    <!-- 视频容器 -->
+                    <div class="enhanced-video-container">
+                        
+                        <div class="video-wrapper">
+                            <video class="demo-video" controls preload="metadata" poster="images/relocal.png">
+                                <source src="videos/relocal.mp4" type="video/mp4">
+                                <source src="videos/relocal.webm" type="video/webm">
+                                您的浏览器不支持视频播放，请<a href="videos/relocal.mp4" class="download-link">点击下载视频</a>
+                            </video>
+                            
+                            <!-- 视频控制信息 -->
+                            <div class="video-info">
+                                <span class="video-tag">实时演示</span>
+                                <span class="video-duration">时长: 1:35</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="bullet-point">基于Scan Context开发载入离线pcd地图的重定位模块</div>
+                        
+                         <p>调研STD、ScanContext（SC）描述子，选择SC描述子展开基于地图的重定位模块。</p>
+                    	<p>在建图阶段保存每一帧点云子地图及其对应的SC描述子。重定位启动后，利用RingKey快速检索历史候选帧，大幅缩小匹配范围；随后通过完整的SC描述子精确比对，确定最相关的历史帧。最后将该历史帧的局部点云与当前全局地图进行NDT+ICP匹配，进行最终验证并获取机器人的初始位姿。</p>
+                    </div>
+                
+
+                <div class="section-title" id="navigation">ROS2 Nav2导航</div>
+
+                <div class="content-block">
+                    
+                    <h2 id="dwb-controller">DWB控制器效果：</h2>
+                    <!-- 视频容器 -->
+                    <div class="enhanced-video-container">
+                        <div class="video-wrapper">
+                            <video class="demo-video" controls preload="metadata" poster="images/DWB_control.png">
+                                <source src="videos/DWB_conltrol.mp4" type="video/mp4">
+                                <source src="videos/DWB_conltrol.webm" type="video/webm">
+                                您的浏览器不支持视频播放，请<a href="videos/DWB_conltrol.mp4" class="download-link">点击下载视频</a>
+                            </video>
+                            
+                            <!-- 视频控制信息 -->
+                            <div class="video-info">
+                                <span class="video-tag">控制器测试</span>
+                                <span class="video-duration">时长: 0:46</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="bullet-point">DWB（Dynamic Window Approach）控制器是一种轮式机器人局部规划方法，直接应用于人形机器人时存在适配性问题。应用在Booster T1平台后发现：机器人容易"走进障碍物"、"走进"障碍物后原地转圈无法逃脱、DWB预测位姿与现实情况严重不符。</div>
+                        <img src="images/DWB.png" alt="DWB控制指令曲线图" 
+             style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; margin: 20px 0; display: block; margin-left: auto; margin-right: auto;">
+
+                    </div>
+                    
+                    <h2 id="pid-controller">PID控制器效果：</h2>
+                    <div class="enhanced-video-container">
+                        <div class="video-wrapper">
+                            <video class="demo-video" controls preload="metadata" poster="images/PID_control.png">
+                                <source src="videos/PID_conltrol.mp4" type="video/mp4">
+                                <source src="videos/PID_conltrol.webm" type="video/webm">
+                                您的浏览器不支持视频播放，请<a href="videos/PID_conltrol.mp4" class="download-link">点击下载视频</a>
+                            </video>
+                            
+                            <div class="video-info">
+                                <span class="video-tag">控制器测试</span>
+                                <span class="video-duration">时长: 0:31</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <div class="bullet-point">PID控制器表现更为稳定，能够更好地适应人形机器人的运动特性，减少了"走进障碍物"的问题。</div>
+
+                    </div>
+                    
+                    <h2 id="escape-strategy">基于极坐标搜索的逃脱策略：</h2>
+                    <div class="enhanced-video-container">
+                        <div class="video-wrapper">
+                            <video class="demo-video" controls preload="metadata" poster="images/Escape.png">
+                                <source src="videos/Escape.mp4" type="video/mp4">
+                                <source src="videos/Escape.webm" type="video/webm">
+                                您的浏览器不支持视频播放，请<a href="videos/Escape.mp4" class="download-link">点击下载视频</a>
+                            </video>
+                            
+                            <div class="video-info">
+                                <span class="video-tag">逃脱策略</span>
+                                <span class="video-duration">时长: 0:31</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="bullet-point">以机器人位置为中心，按设定的半径步长向外逐层扩展，在每一层半径上，采用左右交替的角度采样方式生成候选点，并通过碰撞检测模块判断其可行性。对每个候选点，通过碰撞检测模块判断其是否处于无障碍区域。一旦检测到首个无障碍候选点，即将其确定为逃脱目标位姿，作为机器人执行逃脱运动的参考目标；若在最大搜索半径内未能找到可行点，则判定为搜索失败，结束本次逃脱尝试。</div>
+                    </div>
+
+                </div>
+
+                <div class="section-title" id="bev-dataset">BEV数据集采集 - 动静态分离</div>
+
+                <div class="content-block">
+                    <h2 id="dynamic-static-separation">BEV动静态点云标签</h2>
+                    <p>红色为动态点云，白色为静态地图点云。</p>
+                	<img src="images/BEV_data.png" alt="BEV点云对比图" 
+             style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; margin: 20px 0; display: block; margin-left: auto; margin-right: auto;">
+
+                <div class="highlight-box">
+                    <div class="bullet-point">利用LIO-SAM的离线地图重定位功能获取当前LiDAR位姿附近10×10m区域的高密度点云地图，并对当前帧点云进行相同区域与方位的裁剪，从而缓解单帧点云稀疏的问题。同时触发相机采集并保存全景图像，实现与雷达的软同步，保证多传感器数据在时空上的一致性。在数据处理环节，将获取的稠密点云地图作为静态参考系，构建并膨胀体素占用网格，通过空间匹配算法对比当前帧LiDAR点云与静态地图，分离出动态与静态点云。对于动态点云部分，采用DBSCAN聚类算法去除小簇噪声点，提升BEV数据的完整性与可靠性。</div>
+                </div>
+            </div>
+                <div class="footer">
+                    <p>HSF 实习工作汇总 - 版权所有 © 2025</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 移动端侧边栏切换
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // 点击主内容区域时隐藏侧边栏（移动端）
+        document.querySelector('.main-content').addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.remove('show');
+            }
+        });
+
+        // 目录高亮功能
+        function highlightCurrentSection() {
+            const sections = document.querySelectorAll('.section-title, h2, h3');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let currentSection = '';
+            const scrollPos = window.scrollY + 100;
+            
+            sections.forEach(section => {
+                if (section.id && section.offsetTop <= scrollPos) {
+                    currentSection = section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', highlightCurrentSection);
+        
+        // 页面加载完成后初始化高亮
+        window.addEventListener('load', highlightCurrentSection);
+
+        // 平滑滚动到目标位置
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 90;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // 移动端点击后隐藏侧边栏
+                if (window.innerWidth <= 768) {
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
